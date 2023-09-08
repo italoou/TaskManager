@@ -1,5 +1,10 @@
 package br.italolima.taskmanager.dto;
 
-public record TaskDTO() {
+import java.time.LocalDateTime;
 
+import br.italolima.taskmanager.enums.TaskProgress;
+
+public record TaskDTO(Long id, String title, 
+		String description, TaskProgress status, 
+		LocalDateTime createdAt, LocalDateTime updatedAt) {
 }

@@ -1,11 +1,12 @@
 package br.italolima.taskmanager.controllers;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +27,7 @@ public class AuthenticationController {
 	private TokenService tokenService;
 	
 	@PostMapping("/login")
-	public String login(@RequestBody LoginDTO login) throws Exception {
+	public ResponseEntity<HashMap<String, String>> login(@RequestBody LoginDTO login) throws Exception {
 		
 		Objects.requireNonNull(login.username());
         Objects.requireNonNull(login.password());
@@ -38,20 +39,15 @@ public class AuthenticationController {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
                 = new UsernamePasswordAuthenticationToken(login.username(), login.password());
 
-//        try {
-
-            Authentication authenticate = this.authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-//        } catch (DisabledException e) {
-//            e.printStackTrace();
-//            throw new Exception("USER_DISABLED", e);
-//        } catch (BadCredentialsException e) {
-//            e.printStackTrace();
-//            throw new Exception("INVALID_CREDENTIALS", e);
-//        }
+        Authentication authenticate = this.authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         
         var user = (User) authenticate.getPrincipal(); 
 
-		return tokenService.createToken(user);
+        HashMap<String, String> data = new HashMap<>();
+        
+        data.put("token", tokenService.createToken(user));
+        
+		return ResponseEntity.status(HttpStatus.OK).body(data);
 	}
 	
 }
