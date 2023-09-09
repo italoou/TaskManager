@@ -2,12 +2,14 @@ package br.italolima.taskmanager.services;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.italolima.taskmanager.dto.TaskDTO;
+import br.italolima.taskmanager.dto.TaskProgressDTO;
 import br.italolima.taskmanager.enums.TaskProgress;
 import br.italolima.taskmanager.exceptions.NotFoundException;
 import br.italolima.taskmanager.exceptions.UpdateTaskException;
@@ -22,30 +24,37 @@ public class TaskService {
 	@Autowired
 	private TaskRepository taskRepository;
 	
-	public List<Task> getAllTasks(User user){
-		return taskRepository.findAllByUser(user);
-	}
-	
-	public Task getTask(Long id) throws NotFoundException{
-		return taskRepository.findById(id).orElseThrow(() -> new NotFoundException("Entity Not Found!"));
-	}
-	
-	public Task createTask(TaskDTO taskDTO, User user){		
-		Task task = new Task();
+	public List<TaskDTO> getAllTasks(User user, TaskProgressDTO taskProgressDTO){
 		
-		task.setTitle(taskDTO.title());
-		task.setDescription(taskDTO.description());
+		List<Task> tasks = taskRepository.findAllByUser(user);
+
+		try {
+			return tasks.stream().filter(c -> taskProgressDTO == null? c.getStatus() != TaskProgress.ARCHIVED : c.getStatus() == TaskProgress.valueOf(taskProgressDTO.progress()) )
+	                .map(u -> mapToDTO(u))
+	                .collect(Collectors.toList());
+		}catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException("There Is No Progress With The Given Name");
+		}
+		
+	}
+	
+	public TaskDTO getTask(Long id) throws NotFoundException{
+		return mapToDTO(taskRepository.findById(id).orElseThrow(() -> new NotFoundException("Entity Not Found!")));
+	}
+	
+	public TaskDTO createTask(TaskDTO taskDTO, User user){		
+		Task task = mapToEntity(taskDTO);
 		
 		task.setStatus(TaskProgress.NOT_STARTED);
 		task.setUser(user);
 		task.setCreatedAt(LocalDateTime.now());
 		task.setUpdatedAt(LocalDateTime.now());
 		
-		return taskRepository.save(task);
+		return mapToDTO(taskRepository.save(task));
 	}
 	
-	public Task updateTask(TaskDTO newTask, Long id) throws UpdateTaskException {
-		
+	public TaskDTO updateTask(TaskDTO newTask, Long id) throws UpdateTaskException {
+
 		Task oldTask = taskRepository.findById(id).orElseThrow();
 		
 		switch(oldTask.getStatus()) {
@@ -53,35 +62,57 @@ public class TaskService {
 			case ARCHIVED:
 				throw new UpdateTaskException("Its Not Possible Update Completed or Archived Tasks");
 			default:
-				oldTask.setTitle(newTask.title());
-				oldTask.setDescription(newTask.description());
+				oldTask.setTitle(newTask.getTitle());
+				oldTask.setDescription(newTask.getDescription());
 				oldTask.setUpdatedAt(LocalDateTime.now());
-				return taskRepository.save(oldTask);
+				
+				return mapToDTO(taskRepository.save(oldTask));
 		}
 	}
 	
-	public Task updateTaskProgress(Long id, TaskProgress progress) throws UpdateTaskProgressException {
+	public TaskDTO updateTaskProgress(Long id, TaskProgressDTO taskProgressDTO) throws UpdateTaskProgressException {
 		
 		Task task = taskRepository.findById(id).orElseThrow();
 
+		try {
 		
-		switch(task.getStatus()) {
-			case ARCHIVED:
-				throw new UpdateTaskProgressException("It's Not Possible Update The Progress of Archived Tasks");
-			case COMPLETED:
-				if(progress != TaskProgress.ARCHIVED) {
-					throw new UpdateTaskProgressException("Completed Task Can Only be Archived");	
-				}
-				break;
-			default:
-				break;
+			switch(task.getStatus()) {
+				case ARCHIVED:
+					throw new UpdateTaskProgressException("It's Not Possible Update The Progress of Archived Tasks");
+				case COMPLETED:
+					if(TaskProgress.valueOf(taskProgressDTO.progress()) != TaskProgress.ARCHIVED) {
+						throw new UpdateTaskProgressException("Completed Task Can Only be Archived");	
+					}
+					break;
+				default:
+					break;
+			}
+			
+			task.setStatus(TaskProgress.valueOf(taskProgressDTO.progress()));
+			task.setUpdatedAt(LocalDateTime.now());
+	
+			return mapToDTO(taskRepository.save(task));
+		}catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException("There Is No Progress With The Given Name");
 		}
+	}
+	
+	private Task mapToEntity(TaskDTO taskDTO) {
 		
-		task.setStatus(progress);
-		task.setUpdatedAt(LocalDateTime.now());
-
-		return taskRepository.save(task);
+	    var modelMapper = new ModelMapper();
+	
+		Task task = modelMapper.map(taskDTO, Task.class);
+				
+		return task;
+	}
+	
+	private TaskDTO mapToDTO(Task task) {
 		
+	    var modelMapper = new ModelMapper();
+	
+	    TaskDTO taskDTO = modelMapper.map(task, TaskDTO.class);
+		
+		return taskDTO;
 	}
 	
 }

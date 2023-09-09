@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import br.italolima.taskmanager.dto.ErrorResponseDTO;
+import br.italolima.taskmanager.dto.ResponseDTO;
 import br.italolima.taskmanager.exceptions.NotFoundException;
 import br.italolima.taskmanager.exceptions.UpdateTaskException;
 import br.italolima.taskmanager.exceptions.UpdateTaskProgressException;
@@ -14,30 +16,46 @@ import br.italolima.taskmanager.exceptions.UpdateTaskProgressException;
 public class ApplicationExceptionHandler {
 	
 	@ExceptionHandler({Exception.class})
-    public ResponseEntity<String> handleException(Exception e) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+    public ResponseEntity<ErrorResponseDTO> handleException(Exception e) {
+		
+		ErrorResponseDTO response = new ErrorResponseDTO(HttpStatus.UNAUTHORIZED.value(), e.getMessage()); 
+		
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 	
 	@ExceptionHandler({UpdateTaskProgressException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    ResponseEntity<String> onUpdateProgressException(Exception e) {
-        return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+    ResponseEntity<ErrorResponseDTO> onUpdateProgressException(Exception e) {
+		ErrorResponseDTO response = new ErrorResponseDTO(HttpStatus.BAD_REQUEST.value(), e.getMessage()); 
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 	
 	@ExceptionHandler({UpdateTaskException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    ResponseEntity<String> onUpdateTaskException(Exception e) {
-        return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
+    ResponseEntity<ErrorResponseDTO> onUpdateTaskException(Exception e) {
+		ErrorResponseDTO response = new ErrorResponseDTO(HttpStatus.BAD_REQUEST.value(), e.getMessage()); 
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	}
 	
 	@ExceptionHandler({NotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    ResponseEntity<String> onNotFoundException(Exception e) {
-        return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
+    ResponseEntity<ErrorResponseDTO> onNotFoundException(Exception e) {
+		ErrorResponseDTO response = new ErrorResponseDTO(HttpStatus.NOT_FOUND.value(), e.getMessage()); 
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 	
-	
+	@ExceptionHandler({IllegalArgumentException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    ResponseEntity<ErrorResponseDTO> onIllegalArgumentException(Exception e) {
+		ErrorResponseDTO response = new ErrorResponseDTO(HttpStatus.BAD_REQUEST.value(), e.getMessage()); 
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
 }

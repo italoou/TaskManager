@@ -2,7 +2,12 @@ package br.italolima.taskmanager.exceptions;
 
 public class NotFoundException extends Exception{
 
-	 public NotFoundException(String string) {
+	 /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public NotFoundException(String string) {
         super(string);
 	 }
 }

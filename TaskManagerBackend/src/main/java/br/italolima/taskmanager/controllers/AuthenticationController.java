@@ -1,6 +1,7 @@
 package br.italolima.taskmanager.controllers;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.italolima.taskmanager.dto.LoginDTO;
+import br.italolima.taskmanager.dto.ResponseDTO;
 import br.italolima.taskmanager.models.User;
 import br.italolima.taskmanager.services.TokenService;
 
@@ -27,13 +29,13 @@ public class AuthenticationController {
 	private TokenService tokenService;
 	
 	@PostMapping("/login")
-	public ResponseEntity<HashMap<String, String>> login(@RequestBody LoginDTO login) throws Exception {
+	public ResponseEntity<ResponseDTO> login(@RequestBody LoginDTO login) throws Exception {
 		
 		Objects.requireNonNull(login.username());
         Objects.requireNonNull(login.password());
 
         if (login.password() == "") {
-            throw new Exception("NO_PASSWORD");
+            throw new Exception("No Password Present");
         }
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
@@ -42,12 +44,10 @@ public class AuthenticationController {
         Authentication authenticate = this.authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         
         var user = (User) authenticate.getPrincipal(); 
-
-        HashMap<String, String> data = new HashMap<>();
         
-        data.put("token", tokenService.createToken(user));
+        ResponseDTO response = new ResponseDTO(HttpStatus.OK.value(), Map.of("access_token", tokenService.createToken(user)));
         
-		return ResponseEntity.status(HttpStatus.OK).body(data);
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 	
 }
