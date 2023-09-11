@@ -28,6 +28,7 @@ public class WebSecurityConfig {
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and().authorizeHttpRequests()
 				.requestMatchers(HttpMethod.POST, "/api/taskmanager/authentication/login").permitAll()
+				.requestMatchers(HttpMethod.POST, "/api/taskmanager/users/signup").permitAll()
 				.anyRequest().authenticated()
 				.and().addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
 				.build();
