@@ -20,7 +20,7 @@ Dentre as funcionalidade idealizadas estavam
 - Adicionar Tarefa (Implementada)
 - Alterar Tarefa (Implementada)
 - Buscar Tarefas (Implementada com bugs)
-- Adicionar Usuario (Não implementada)
+- Adicionar Usuario (Implementada)
 
 # Como executar
 

@@ -56,9 +56,7 @@ export class TaskSearchComponent implements OnInit {
     this.search()
   }
 
-  search(){
-    console.log(this.taskSearchText);
-    
+  search(){    
     if(this.taskSearchText != null){
 
       this.taskService.getAllTasksWithText(this.taskSearchText).subscribe({
@@ -127,10 +125,7 @@ export class TaskSearchComponent implements OnInit {
       progress: new FormControl(task.status, [
         Validators.required
       ]),
-    })
-
-    console.log(this.taskFormGroup);
-    
+    })    
   }
 
   makeEditableTask(){
@@ -165,5 +160,4 @@ export class TaskSearchComponent implements OnInit {
   padTo2Digits(num: number) {
     return num.toString().padStart(2, "0");
   }
-
 }

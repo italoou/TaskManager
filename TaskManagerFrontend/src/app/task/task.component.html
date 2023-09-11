@@ -21,7 +21,7 @@
             </select>
         </div>
     </div>
-    <div class="d-flex flex-wrap m-2 justify-content-center" *ngIf="tasks.length != 0">
+    <div class="d-flex flex-wrap m-2 justify-content-center" *ngIf="tasks?.length != 0">
       <div *ngFor="let task of tasks; let i = index" >
           <div class="card mx-2 mb-2 task-card">
             <div class="card-body">
@@ -91,7 +91,7 @@
       <div class="card mx-2 task-card visibility-hidden">
       </div> 
     </div>
-    <div class="d-flex flex-wrap m-2 justify-content-center" *ngIf="tasks.length == 0">
+    <div class="d-flex flex-wrap m-2 justify-content-center" *ngIf="tasks?.length == 0">
       <h3>Não há tarefas!</h3>
     </div>
   </div>
