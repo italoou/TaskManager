@@ -14,6 +14,7 @@ import { RequestInterceptorProvider } from './interceptors/request.interceptor';
 import { CookieService } from 'ngx-cookie-service';
 import { TaskSearchComponent } from './task-search/task-search.component';
 import { ErrorInterceptorProvider } from './interceptors/error.interceptor';
+import { UsuarioFormsComponent } from './usuario-forms/usuario-forms.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { ErrorInterceptorProvider } from './interceptors/error.interceptor';
     TaskComponent,
     HeaderComponent,
     TaskFormsComponent,
-    TaskSearchComponent
+    TaskSearchComponent,
+    UsuarioFormsComponent
   ],
   imports: [
     BrowserModule,

@@ -5,10 +5,12 @@ import { TaskComponent } from './task/task.component';
 import { TaskFormsComponent } from './task-forms/task-forms.component';
 import { AuthGuard } from './auth/auth.guard';
 import { TaskSearchComponent } from './task-search/task-search.component';
+import { UsuarioFormsComponent } from './usuario-forms/usuario-forms.component';
 
 const routes: Routes = [
   {path: '', redirectTo:'login', pathMatch: 'full'},
   {path:'login', component: LoginComponent},
+  {path:'cadastrar', component: UsuarioFormsComponent},
   {path:'inicio', component: TaskComponent, canActivate:[AuthGuard]},
   {path:'adicionar', component: TaskFormsComponent, canActivate:[AuthGuard]},
   {path:'buscar', component: TaskSearchComponent, canActivate:[AuthGuard]},

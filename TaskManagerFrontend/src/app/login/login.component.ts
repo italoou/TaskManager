@@ -68,6 +68,10 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  goToSignUp(){
+    this.router.navigate(['/cadastrar'])
+  }
+
   goToMyTask(){
     this.router.navigate(['/inicio'])
   }

@@ -1,0 +1,50 @@
+.card{
+  background-color:#0000004f;
+  color: white;
+  box-shadow: rgba(0, 0, 0, 0.512) 0px 3px 20px;
+  min-height: 40%;
+  min-width: 40%
+}
+
+.aside-img{
+  width: 30%;
+}
+aside {
+  flex: 1;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 120px 120px;
+
+}
+
+#page-auth {
+  display: flex;
+  align-items: stretch;
+  height: 100vh;
+   
+}
+
+@media (max-width: 768px) {
+  aside{
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  aside{
+    display: none;
+  }
+}
+
+main {
+  flex: 1;
+
+  padding: 0, 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
