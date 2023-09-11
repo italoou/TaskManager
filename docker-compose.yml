@@ -1,12 +1,14 @@
 version: '3.3'
 services:
-  # task-manager-frontend:
-  #   container_name: task-manager-frontend
-  #   image: task-manager-frontend-image
-  #   restart: unless-stopped
-  #   build: TaskManagerFrontend/.
-  #   ports:
-  #     - 80:80
+  task-manager-frontend:
+    container_name: task-manager-frontend
+    image: task-manager-frontend-image
+    restart: unless-stopped
+    build: TaskManagerFrontend/.
+    ports:
+      - 80:80
+    networks:
+      - task-manager-network
 
   task-manager-backend:
     container_name: task-manager-backend
