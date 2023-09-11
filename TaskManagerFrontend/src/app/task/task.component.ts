@@ -124,10 +124,7 @@ export class TaskComponent implements OnInit {
       progress: new FormControl(task.status, [
         Validators.required
       ]),
-    })
-
-    console.log(this.taskFormGroup);
-    
+    })    
   }
 
   makeEditableTask(){
