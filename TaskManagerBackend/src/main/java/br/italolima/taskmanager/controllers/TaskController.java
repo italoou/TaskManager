@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.italolima.taskmanager.dto.ResponseDTO;
+import br.italolima.taskmanager.dto.SearchDTO;
 import br.italolima.taskmanager.dto.TaskDTO;
 import br.italolima.taskmanager.dto.TaskProgressDTO;
 import br.italolima.taskmanager.enums.TaskProgress;
@@ -23,18 +25,28 @@ import br.italolima.taskmanager.exceptions.UpdateTaskProgressException;
 import br.italolima.taskmanager.models.User;
 import br.italolima.taskmanager.services.TaskService;
 
+@CrossOrigin("*")
 @RestController()
-@RequestMapping("/tasks")
+@RequestMapping("/api/taskmanager/tasks")
 public class TaskController {
 
 	@Autowired
 	private TaskService taskService;
 	
 	@GetMapping("")
-	public ResponseEntity<ResponseDTO> getAllTasks(Authentication authentication, @RequestParam(required = false) TaskProgressDTO taskProgressDTO) {
+	public ResponseEntity<ResponseDTO> getAllTasks(Authentication authentication, @RequestParam(required = false) TaskProgressDTO progress) {
 		User user = (User) authentication.getPrincipal();
 		
-		ResponseDTO response = new ResponseDTO(HttpStatus.OK.value(), taskService.getAllTasks(user, taskProgressDTO));
+		ResponseDTO response = new ResponseDTO(HttpStatus.OK.value(), taskService.getAllTasks(user, progress));
+		
+		return ResponseEntity.status(HttpStatus.OK).body(response);
+	}
+	
+	@GetMapping("/search/{search}")
+	public ResponseEntity<ResponseDTO> getAllTasksWithText(Authentication authentication, @PathVariable SearchDTO search) {
+		User user = (User) authentication.getPrincipal();
+		
+		ResponseDTO response = new ResponseDTO(HttpStatus.OK.value(), taskService.getAllTasksWithText(user, search));
 		
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}

@@ -1,24 +1,33 @@
 version: '3.3'
 services:
-  # task-manager:
-  #   container_name: task-manager
-  #   image: task-manager-image
+  # task-manager-frontend:
+  #   container_name: task-manager-frontend
+  #   image: task-manager-frontend-image
   #   restart: unless-stopped
-  #   build: .
+  #   build: TaskManagerFrontend/.
   #   ports:
-  #     - ${TASK_MANAGER_PORT}:8030
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     DB_USERNAME: ${POSTGRES_USER}
-  #     DB_PASSWORD: ${POSTGRES_PASSWORD}
-  #     DATABASE: ${POSTGRES_DATABASE}
-  #     DB_URL: ${DB_URL}
-  #     DB_PORT: ${DB_PORT}
-  #   networks:
-  #     - task-manager-network
-  #   depends_on:
-  #     - task-manager-postgres
+  #     - 80:80
+
+  task-manager-backend:
+    container_name: task-manager-backend
+    image: task-manager-backend-image
+    restart: unless-stopped
+    build: TaskManagerBackend/.
+    ports:
+      - ${APP_PORT}:8030
+    env_file:
+      - .env
+    environment:
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_URL: ${DB_URL}
+      DB_PORT: ${DB_PORT}
+      APP_PORT: ${APP_PORT} 
+    networks:
+      - task-manager-network
+    depends_on:
+      - task-manager-postgres
 
   task-manager-postgres:
     container_name: task-manager-postgres
@@ -29,9 +38,9 @@ services:
     env_file:
       - .env
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:

@@ -18,7 +18,7 @@ public class TokenService {
 				.withIssuer("italolima")
 				.withSubject(user.getUsername())
 				.withClaim("id", user.getId())
-				.withExpiresAt(LocalDateTime.now().plusMinutes(30).toInstant(ZoneOffset.of("-03:00")))
+				.withExpiresAt(LocalDateTime.now().plusMinutes(60).toInstant(ZoneOffset.of("-03:00")))
 				.sign(Algorithm.HMAC256("qazwsxedcqweasdzxc"));
 	}
 

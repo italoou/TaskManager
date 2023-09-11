@@ -1,5 +1,6 @@
 package br.italolima.taskmanager.models;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -35,6 +36,8 @@ public class Task {
 	private LocalDateTime createdAt;
 	
 	private LocalDateTime updatedAt;
+	
+	private LocalDate deadline;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
@@ -95,5 +98,12 @@ public class Task {
 
 	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+	
+	public LocalDate getDeadline() {
+		return deadline;
+	}
+	public void setDeadline(LocalDate deadline) {
+		this.deadline = deadline;
 	}
 }

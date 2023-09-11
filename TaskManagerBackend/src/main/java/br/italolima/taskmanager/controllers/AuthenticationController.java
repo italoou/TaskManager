@@ -10,8 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.italolima.taskmanager.dto.LoginDTO;
@@ -19,7 +21,9 @@ import br.italolima.taskmanager.dto.ResponseDTO;
 import br.italolima.taskmanager.models.User;
 import br.italolima.taskmanager.services.TokenService;
 
+@CrossOrigin("*")
 @RestController
+@RequestMapping("/api/taskmanager/authentication")
 public class AuthenticationController {
 
 	@Autowired
@@ -30,7 +34,7 @@ public class AuthenticationController {
 	
 	@PostMapping("/login")
 	public ResponseEntity<ResponseDTO> login(@RequestBody LoginDTO login) throws Exception {
-		
+
 		Objects.requireNonNull(login.username());
         Objects.requireNonNull(login.password());
 

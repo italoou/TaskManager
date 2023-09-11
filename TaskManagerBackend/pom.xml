@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>br.italolima</groupId>
 	<artifactId>TaskManagerBackend</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2023-09-10</version>
 	<name>TaskManagerBackend</name>
 	<description>Backend for the TaskManager Application</description>
 	<properties>

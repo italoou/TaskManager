@@ -27,7 +27,7 @@ public class WebSecurityConfig {
 		return http.cors().and().csrf().disable()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and().authorizeHttpRequests()
-				.requestMatchers(HttpMethod.POST, "/login").permitAll()
+				.requestMatchers(HttpMethod.POST, "/api/taskmanager/authentication/login").permitAll()
 				.anyRequest().authenticated()
 				.and().addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
 				.build();

@@ -1,5 +1,6 @@
 package br.italolima.taskmanager.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import br.italolima.taskmanager.enums.TaskProgress;
@@ -12,6 +13,7 @@ public class TaskDTO {
 	private TaskProgress status;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
+	private LocalDate deadline;
 	
 	public Long getId() {
 		return id;
@@ -49,6 +51,10 @@ public class TaskDTO {
 	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-	
-	
+	public LocalDate getDeadline() {
+		return deadline;
+	}
+	public void setDeadline(LocalDate deadline) {
+		this.deadline = deadline;
+	}	
 }

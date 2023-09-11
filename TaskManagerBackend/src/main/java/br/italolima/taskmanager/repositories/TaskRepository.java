@@ -8,6 +8,6 @@ import br.italolima.taskmanager.models.Task;
 import br.italolima.taskmanager.models.User;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
-
-	List<Task> findAllByUser(User user);
+	
+	List<Task> findAllByUserOrderByStatusAscCreatedAtAsc(User user);
 }

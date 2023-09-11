@@ -6,8 +6,10 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.MergedAnnotations.Search;
 import org.springframework.stereotype.Service;
 
+import br.italolima.taskmanager.dto.SearchDTO;
 import br.italolima.taskmanager.dto.TaskDTO;
 import br.italolima.taskmanager.dto.TaskProgressDTO;
 import br.italolima.taskmanager.enums.TaskProgress;
@@ -26,10 +28,24 @@ public class TaskService {
 	
 	public List<TaskDTO> getAllTasks(User user, TaskProgressDTO taskProgressDTO){
 		
-		List<Task> tasks = taskRepository.findAllByUser(user);
-
+		List<Task> tasks = taskRepository.findAllByUserOrderByStatusAscCreatedAtAsc(user);
+				
 		try {
 			return tasks.stream().filter(c -> taskProgressDTO == null? c.getStatus() != TaskProgress.ARCHIVED : c.getStatus() == TaskProgress.valueOf(taskProgressDTO.progress()) )
+	                .map(u -> mapToDTO(u))
+	                .collect(Collectors.toList());
+		}catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException("There Is No Progress With The Given Name");
+		}
+		
+	}
+	
+	public List<TaskDTO> getAllTasksWithText(User user, SearchDTO searchDTO){
+		
+		List<Task> tasks = taskRepository.findAllByUserOrderByStatusAscCreatedAtAsc(user);
+				
+		try {
+			return tasks.stream().filter(c -> c.getTitle().contains(searchDTO.text()) || c.getDescription().contains(searchDTO.text()) )
 	                .map(u -> mapToDTO(u))
 	                .collect(Collectors.toList());
 		}catch (IllegalArgumentException e) {
@@ -64,6 +80,8 @@ public class TaskService {
 			default:
 				oldTask.setTitle(newTask.getTitle());
 				oldTask.setDescription(newTask.getDescription());
+				oldTask.setDeadline(newTask.getDeadline());
+				oldTask.setStatus(newTask.getStatus());
 				oldTask.setUpdatedAt(LocalDateTime.now());
 				
 				return mapToDTO(taskRepository.save(oldTask));
