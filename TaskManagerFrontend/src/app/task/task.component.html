@@ -1,0 +1,160 @@
+<app-header></app-header>
+
+<div class="d-flex flex-column justify-content-center align-items-center my-3 mx-2">
+  <h1>Minhas Tarefas</h1>
+  <div class="card mx-1">
+    <div [formGroup]="taskFilter">
+      <div class="mx-3" style="margin-top: 1rem;">
+        <div class="form-group">
+          <label><b>Progresso da Tarefa</b></label>
+          <select
+              class="form-select"
+              formControlName="progress"
+              aria-label="Default select example"
+              (change)="getAllTasks()"
+            >
+              <option value="">Selecione...</option>
+              <option value="NOT_STARTED">Não iniciada</option>
+              <option value="IN_PROGRESS">Em progresso</option>
+              <option value="COMPLETED">Finalizada</option>
+              <option value="ARCHIVED">Arquivada</option>
+            </select>
+        </div>
+    </div>
+    <div class="d-flex flex-wrap m-2 justify-content-center" *ngIf="tasks.length != 0">
+      <div *ngFor="let task of tasks; let i = index" >
+          <div class="card mx-2 mb-2 task-card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <h5 class="card-title text-start">
+                  <div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown">
+                    <button
+                      type="button"
+                      *ngIf="task.status == 'NOT_STARTED'"
+                      class="btn btn-secondary me-2"
+                      id="dropdownManual"
+                      ngbDropdownAnchor
+                      (focus)="myDrop.open()"
+                    >
+                      {{taskProgress[task.status]}}
+                    </button>
+                    <button
+                      type="button"
+                      *ngIf="task.status == 'IN_PROGRESS'"
+                      class="btn btn-primary me-2"
+                      id="dropdownManual"
+                      ngbDropdownAnchor
+                      (focus)="myDrop.open()"
+                    >
+                      {{taskProgress[task.status]}}
+                    </button>
+                    <button
+                      type="button"
+                      *ngIf="task.status == 'COMPLETED'"
+                      class="btn btn-success me-2"
+                    >
+                      {{taskProgress[task.status]}}
+                    </button>
+                    <button
+                      type="button"
+                      *ngIf="task.status == 'ARCHIVED'"
+                      class="btn btn-dark me-2"
+                    >
+                      {{taskProgress[task.status]}}
+                    </button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                      <button *ngIf="task.status != 'COMPLETED' && task.status != 'ARCHIVED' && task.status != 'NOT_STARTED'" ngbDropdownItem (click)="updateTaskProgress('NOT_STARTED',task.id)">Não iniciada</button>
+                      <button *ngIf="task.status != 'COMPLETED' && task.status != 'ARCHIVED' && task.status != 'IN_PROGRESS'" ngbDropdownItem (click)="updateTaskProgress('IN_PROGRESS',task.id)">Em progresso</button>
+                      <button  ngbDropdownItem (click)="updateTaskProgress('COMPLETED',task.id)">Finalizada</button>
+                    </div>
+                  </div>
+                </h5>
+                <a *ngIf="task.status != 'ARCHIVED'" class="btn text-white" (click)="updateTaskProgress('ARCHIVED',task.id)"><i class="bi bi-trash3"></i></a>
+              </div>
+              <p class="card-text text-start">{{task.title}}</p>
+              <div class="d-flex justify-content-between">
+                <a class="btn btn-outline-light" (click)="openEnd(content, task);"> visualizar
+                </a>
+                <span *ngIf="true" class=" ">{{formatViewerDate(task.deadline)}}</span>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="card mx-2 task-card visibility-hidden">
+      </div>
+      <div class="card mx-2 task-card visibility-hidden">
+      </div>
+      <div class="card mx-2 task-card visibility-hidden">
+      </div>
+      <div class="card mx-2 task-card visibility-hidden">
+      </div>
+      <div class="card mx-2 task-card visibility-hidden">
+      </div> 
+    </div>
+    <div class="d-flex flex-wrap m-2 justify-content-center" *ngIf="tasks.length == 0">
+      <h3>Não há tarefas!</h3>
+    </div>
+  </div>
+</div>
+
+<ng-template #content let-offcanvas [formGroup]="taskFormGroup">
+	<div class="offcanvas-header">
+		<h4 *ngIf="!editingTask" class="offcanvas-title">{{taskInfo.title}}</h4>
+    <div *ngIf="editingTask" class="form-group w-100" >
+      <label><b>Título</b></label>
+      <input
+          class="form-control"
+          formControlName="title"
+          type="text"
+        />
+    </div>
+		<button type="button " class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
+	</div>
+	<div class="offcanvas-body">
+		<p *ngIf="!editingTask">{{taskInfo.description}}</p>
+    <div *ngIf="editingTask" class="form-group w-100" >
+      <label><b>Descrição</b></label>
+      <textarea              
+        formControlName="description"
+        placeholder="Digite o descrição da tarefa"
+        class="form-control"
+      ></textarea>
+    </div>
+    <p *ngIf="!editingTask">Progresso: {{taskProgress[taskInfo.status]}}</p>
+    <div *ngIf="editingTask" class="form-group w-100" >
+      <label><b>Progresso da Tarefa</b></label>
+      <select
+          class="form-select"
+          formControlName="progress"
+          aria-label="Default select example"
+        >
+          <option value="">Selecione...</option>
+          <option value="NOT_STARTED">Não iniciada</option>
+          <option value="IN_PROGRESS">Em progresso</option>
+          <option value="COMPLETED">Finalizada</option>
+          <option value="ARCHIVED">Arquivada</option>
+        </select>
+    </div>
+		<p *ngIf="!editingTask">Data criação: {{formatViewerDate(taskInfo.createdAt)}}</p>
+    <div *ngIf="editingTask" class="form-group w-100" >
+      <label><b>Data criação:</b></label>
+      <p>{{formatViewerDate(taskInfo.createdAt)}}</p>
+    </div>
+    <p *ngIf="!editingTask">Finalizar em: {{formatViewerDate(taskInfo.deadline)}}</p>
+    <div *ngIf="editingTask" class="form-group w-100" >
+      <label><b>Prazo final</b></label>
+        <input
+          type="date"              
+          formControlName="deadline"
+          class="form-control"
+        />
+    </div>
+    <div class="text-end my-2">
+			<button *ngIf="!editingTask && taskInfo.status != 'COMPLETED' && taskInfo.status != 'ARCHIVED'" type="button" (click)="makeEditableTask()" class="btn btn-warning">Editar</button>
+      <div *ngIf="editingTask" class="d-flex justify-content-between">
+        <button type="button" class="btn btn-outline-success" (click)="updateTask(); offcanvas.dismiss('')">Atualizar</button>
+        <button type="button" class="btn btn-outline-dark" (click)="cancelEditing()">Cancelar</button>
+      </div>
+    </div>
+	</div>
+</ng-template>

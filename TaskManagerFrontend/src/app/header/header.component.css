@@ -1,0 +1,27 @@
+.navbar-button-collapse{
+  display: none;
+}
+
+.navbar-left-items{
+  flex-direction: row;
+}
+
+@media (max-width: 575px) {
+
+  .navbar-left-items{
+    flex-direction: column;
+  }
+}
+@media (max-width: 575px) {
+  .navbar-button-collapse{
+    display: inline;
+  }
+}
+
+.search{
+  width: 30%;
+  /* position: absolute */
+}
+a{
+  color: white
+}

@@ -1,0 +1,35 @@
+.card{
+  background-color:#0000004f;
+  color: white;
+  box-shadow: rgba(0, 0, 0, 0.512) 0px 3px 20px;
+  min-height: 40%;
+  min-width: 40%
+}
+
+h1{
+  color: white;
+}
+
+task-carrousel{
+  flex-wrap: wrap;
+}
+
+.task-card{
+  margin: 0.5rem;
+
+  min-width: 20rem;
+  max-width: 20rem;
+  min-height: 6rem;
+}
+
+@media (max-width: 375px) {
+  .task-card{
+    min-width: 17rem;
+  }
+}
+
+.visibility-hidden{
+  visibility: hidden;
+  padding: 6px 12px;
+  min-height: 0rem;
+}

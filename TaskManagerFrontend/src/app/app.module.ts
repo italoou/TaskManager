@@ -1,18 +1,44 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
+import { BrowserModule, } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { LoginComponent } from './login/login.component';
+import { TaskComponent } from './task/task.component';
+import { NgbCollapseModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { HttpClientModule } from '@angular/common/http';
+import { HeaderComponent } from './header/header.component';
+import { TaskFormsComponent } from './task-forms/task-forms.component';
+import { RequestInterceptorProvider } from './interceptors/request.interceptor';
+import { CookieService } from 'ngx-cookie-service';
+import { TaskSearchComponent } from './task-search/task-search.component';
+import { ErrorInterceptorProvider } from './interceptors/error.interceptor';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent,
+    TaskComponent,
+    HeaderComponent,
+    TaskFormsComponent,
+    TaskSearchComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    AppRoutingModule,
+    NgbModule,
+    NgbCollapseModule,
   ],
-  providers: [],
+  providers: [
+    RequestInterceptorProvider,
+    CookieService,
+    ErrorInterceptorProvider
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,0 +1,49 @@
+<nav class="navbar  navbar-light bg-dark d-flex justify-content-between" >
+  <div class="d-flex navbar-left-items" style="width: 100%;">
+    <div class="d-flex justify-content-between" >
+        <div class="d-flex align-items-center">
+          <a class="mx-3 btn navbar-brand" (click)="goToMyTask()"><i class="bi bi-clock mx-1"></i>Task Manager</a>
+        </div>
+        <div>
+          <button  type="button"
+            class="btn btn-outline-primary mx-2 navbar-button-collapse"
+            (click)="isCollapsed = !isCollapsed"
+            [attr.aria-expanded]="!isCollapsed"
+            aria-controls="collapseExample"
+            style="color: white;"
+            >
+            <i class="bi bi-list"></i>
+          </button>
+        </div>
+    </div>
+    <div class="navbar-expand-sm">
+      <div class="collapse navbar-collapse " id="navbarSupportedContent" #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed"  >
+        <ul class="navbar-nav mx-3">
+          <li class="nav-item active ml-5">
+            <a class="nav-link btn" (click)="goToMyTask()">Minhas Tarefas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link btn" (click)="goToAddTask()">Adicionar Tarefa</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link btn" (click)="isSearchCollapsed = !isSearchCollapsed"
+            [attr.aria-expanded]="!isCollapsed"
+            aria-controls="collapseExample">Buscar</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link btn" style="color: red" (click)="logout()">Sair</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class=" collapse navbar-expand-md navbar-collapse"  id="navbarSearchContent" #collapse="ngbCollapse" [(ngbCollapse)]="isSearchCollapsed">
+    <ul class="navbar-nav mx-3">
+      <li class="nav-item active d-flex w-100" [formGroup]="searchFormGroup">
+        <input class="form-control mx-1" type="search" placeholder="Buscar:" formControlName="text" aria-label="Search">
+        <button class="btn btn-outline-info mx-1 my-sm-0" type="submit" (click)="goToSearch()">Buscar</button>
+      </li>
+    </ul>
+  </div>
+</nav>

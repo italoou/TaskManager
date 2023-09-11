@@ -1,0 +1,76 @@
+<div id="page-auth">
+  <aside>
+    <h1 class="black"><i class="bi bi-clock mx-1"></i>Task Manager</h1>
+    <h3> <i class="bi bi-calendar mx-1"></i> Gerenciamento de tarefas</h3>
+    <!-- <img src="assets/img/project-management.png" class="aside-img"> -->
+  </aside>
+  <hr/>
+  <main class="d-flex justify-content-center align-items-center">
+    <div
+      [formGroup]="loginFG"
+      class="card m-3"
+    >
+      <div class="d-flex justify-content-center m-3">
+        <h3> <i class="bi bi-clock mx-1"></i>Task Manager</h3>
+      </div>
+
+      
+      
+      <div class="form-group mb-2" style="margin: 0 1rem; min-width: 150px">
+        <div class="row  d-flex align-items-center">
+          <div class="col"><hr></div>
+          <div class="col-auto">Usuário</div>
+          <div class="col"><hr></div>
+        </div>
+        <input
+          type="text"
+          formControlName="username"
+          (keyup.enter)="login()"
+          placeholder="Digite seu nome de usuário"
+          mask="000000000000"
+          class="form-control"
+        />
+        <div *ngIf="campoInvalido && loginFG.invalid">
+          <small
+            class="p-error"
+            *ngIf="loginFG.controls['username'].errors?.['required']"
+          >
+            Preenchimento obrigatório
+          </small>
+        </div>
+      </div>
+      <div class="form-group " style="margin: 0 1rem; min-width: 150px">
+        <div class="row d-flex align-items-center">
+          <div class="col"><hr></div>
+          <div class="col-auto">Senha</div>
+          <div class="col"><hr></div>
+        </div>
+        <input
+          type="password"
+          formControlName="password"
+          (keyup.enter)="login()"
+          placeholder="Digite sua senha"
+          class="form-control"
+          data-mask="000.000.000-00"
+        />
+        <div *ngIf="campoInvalido && loginFG.invalid">
+          <small
+            class="p-error"
+            *ngIf="loginFG.controls['password'].errors?.['required']"
+          >
+            Preenchimento obrigatório
+          </small>
+        </div>
+      </div>
+      <div class="form-group " style="margin: 0 1rem; min-width: 150px">
+        <button
+          class="btn btn-primary px-5 my-3 shadow w-100"
+          (click)="login()"
+          (keypress.enter)="login()"          
+        >
+        <i class="bi bi-box-arrow-in-left mx-1" ></i>
+          Entrar
+        </button>
+      </div>
+    </div>
+  </main>

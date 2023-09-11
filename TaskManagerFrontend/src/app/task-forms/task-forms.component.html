@@ -1,0 +1,41 @@
+<app-header></app-header>
+<div class="d-flex flex-column justify-content-center align-items-center my-3 mx-2">
+  <h1>Adicionar Tarefa</h1>
+  <div class="card mx-1">
+    <div [formGroup]="taskParameters">
+      <div class="m-3" >
+        <div class="form-group">
+          <label><b>Título</b></label>
+          <input
+            type="text"              
+            formControlName="title"
+            placeholder="Digite o título da tarefa"
+            class="form-control"
+          />
+          <label><b>Descrição</b></label>
+          <textarea              
+            formControlName="description"
+            placeholder="Digite o descrição da tarefa"
+            class="form-control"
+          ></textarea>
+          <label><b>Prazo final</b></label>
+          <input
+            type="date"              
+            formControlName="deadline"
+            class="form-control"
+          />
+          <div class="form-group " >
+            <button
+              class="btn btn-success my-3 shadow w-100"
+              (click)="createTask()"
+              (keypress.enter)="createTask()"          
+            >
+            <i class="bi bi-plus mx-1" ></i>
+              Adicionar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
