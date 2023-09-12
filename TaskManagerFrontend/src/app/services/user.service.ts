@@ -7,7 +7,7 @@ import { map } from 'rxjs';
 })
 export class UserService {
 
-  private url = 'http://localhost:8030/api/taskmanager/users'
+  private url = '/api/taskmanager/users'
 
   constructor(private http: HttpClient) { }
 

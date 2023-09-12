@@ -6,6 +6,22 @@
   flex-direction: row;
 }
 
+.outline-purple:hover{
+  border-color: #4d046c;
+  background-color: #4d046c;
+}
+
+.outline-purple{
+  --bs-btn-color: blueviolet;
+  --bs-btn-border-color: blueviolet;
+  --bs-btn-hover-bg: blueviolet;
+  --bs-btn-hover-border-color: blueviolet;
+  --bs-btn-active-bg: blueviolet;
+  --bs-btn-active-border-color: blueviolet;
+  --bs-btn-disabled-color: blueviolet;
+  --bs-btn-disabled-border-color: blueviolet;
+}
+
 @media (max-width: 575px) {
 
   .navbar-left-items{

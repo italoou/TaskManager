@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
 })
 export class AuthenticationService {
 
-  private url = 'http://localhost:8030/api/taskmanager/authentication'
+  private url = '/api/taskmanager/authentication'
 
   constructor(private http: HttpClient, private cookieService: CookieService) { }
 

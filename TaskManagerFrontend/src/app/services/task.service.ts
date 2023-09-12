@@ -7,7 +7,7 @@ import { map } from 'rxjs';
 })
 export class TaskService {
 
-  private url = 'http://localhost:8030/api/taskmanager/tasks'
+  private url = '/api/taskmanager/tasks'
 
   constructor(private http: HttpClient) { }
 
